@@ -13,7 +13,7 @@ def main():
     data = request.json
 
     if data['type'] == 'confirmation':
-        return '6c8bef24'  # Код подтверждения из ВК
+        return '348da784'  # Код подтверждения из ВК
 
     elif data['type'] == 'message_new':
         user_id = data['object']['peer_id']
