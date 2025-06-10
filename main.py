@@ -1,19 +1,12 @@
-from flask import Flask, request
-import vk_api
-import os
-
-app = Flask(__name__)
-
-GROUP_TOKEN = os.getenv("GROUP_TOKEN")
-vk_session = vk_api.VkApi(token=GROUP_TOKEN)
-vk = vk_session.get_api()
-
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def main():
+    if request.method == 'HEAD':
+        return '', 200
+
     data = request.json
 
     if data['type'] == 'confirmation':
-        return '1c6691de'  # Код подтверждения из ВК
+        return '1c6691de'
 
     elif data['type'] == 'message_new':
         try:
@@ -31,6 +24,3 @@ def main():
             return "Ошибка при обработке данных", 400
 
     return 'ok'
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.getenv("PORT", 5000)))
