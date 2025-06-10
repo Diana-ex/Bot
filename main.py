@@ -13,18 +13,22 @@ def main():
     data = request.json
 
     if data['type'] == 'confirmation':
-        return '1c6691de'  # Строка, которую должен вернуть сервер
+        return '1c6691de'  # Код подтверждения из ВК
 
     elif data['type'] == 'message_new':
-        user_id = data['object']['peer_id']
-        message_text = data['object']['text']
+        try:
+            user_id = data['object']['peer_id']
+            message_text = data['object']['text']
 
-        # Отправляем ответ пользователю
-        vk.messages.send(
-            peer_id=user_id,
-            message=f"Вы написали: {message_text}",
-            random_id=0
-        )
+            # Отправляем ответ пользователю
+            vk.messages.send(
+                peer_id=user_id,
+                message=f"Вы написали: {message_text}",
+                random_id=0
+            )
+        except KeyError as e:
+            print(f"Ошибка при обработке данных: {e}")
+            return "Ошибка при обработке данных", 400
 
     return 'ok'
 
